@@ -19,6 +19,9 @@
 [submodule "support/apf"]
 	path = support/apf
 	url = http://github.com/ajaxorg/apf.git
+[submodule "support/packager"]
+	path = support/packager
+	url = http://github.com/bb-froggy/packager.git
 [submodule "support/node-builds-v4"]
 	path = support/node-builds-v4
 	url = http://github.com/ajaxorg/node-builds-v4.git
