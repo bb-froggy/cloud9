@@ -2,7 +2,10 @@
  * @copyright 2010, Ajax.org B.V.
  * @license GPLv3 <http://www.gnu.org/licenses/gpl.txt>
  */
-require.def("ext/keybindings_default/default_mac", ["core/ide", "ext/keybindings/keybindings"], function(ide, keys) {
+define(function(require, exports, module) {
+
+var ide = require("core/ide");
+var keys = require("ext/keybindings/keybindings");
 
 return keys.onLoad({
     "ext" : {
@@ -15,7 +18,7 @@ return keys.onLoad({
         },
         "undo" : {
             "undo": "Command-Z",
-            "redo": "Command-Y"
+            "redo": "Command-Shift-Z"
         },
         "clipboard" : {
             "cut": "Shift-Command-X",
@@ -31,18 +34,28 @@ return keys.onLoad({
             "stepover": "F10",
             "stepout": "Shift-F11"
         },
+        "zen": {
+            "zen": "Command-E",
+            "zenslow": "Command-Shift-E"
+        },
         "gotoline": {
-            "gotoline": "Command-L"
+           "gotoline": "Command-L"
         },
         "beautify": {
             "beautify": "Command-Shift-B"
         },
         "gotofile": {
-            "gotofile": "Alt-Shift-R|Command-T"
+            "gotofile": "Alt-Shift-R"
         },
         "newresource": {
-            "newfile": "Command-N",
-            "newfolder": "Command-Shift-N"
+            "newfile": "Option-Shift-N",
+            "newfiletemplate": "Option-Ctrl-N",
+            "newfolder": "Option-Ctrl-Shift-N"
+        },
+        "quicksearch": {
+            "find": "Command-F",
+            "findnext": "Command-G",
+            "findprevious": "Command-Shift-G"
         },
         "searchreplace" : {
             "search": "Command-Shift-F",
@@ -58,11 +71,11 @@ return keys.onLoad({
             "showsettings": "Command-,"
         },
         "tabbehaviors" : {
-            "closetab": "Command-W",
-            "closealltabs": "Command-Shift-W",
+            "closetab": "Command-W|Option-W",
+            "closealltabs": "Command-Shift-W|Option-Shift-W",
             "closeallbutme": "Command-Option-W",
-            "gototabright": "Command-Shift-]",
-            "gototableft": "Command-Shift-[",
+            "gototabright": "Command-]",
+            "gototableft": "Command-[",
             "tab1": "Command-1",
             "tab2": "Command-2",
             "tab3": "Command-3",
@@ -72,12 +85,14 @@ return keys.onLoad({
             "tab7": "Command-7",
             "tab8": "Command-8",
             "tab9": "Command-9",
-            "tab0": "Command-0"
+            "tab0": "Command-0",
+            "revealtab": "Command-Shift-L",
+            "nexttab": "Command-Tab|Option-Tab",
+            "previoustab": "Command-Shift-Tab|Option-Shift-Tab"
         },
         "code" : {
             "selectall": "Command-A",
             "removeline": "Command-D",
-            "gotoline": "Command-L",
             "togglecomment": "Command-/",
             "findnext": "Command-G",
             "findprevious": "Command-Shift-G",

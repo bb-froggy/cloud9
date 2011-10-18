@@ -14,7 +14,7 @@ var editors = require("ext/editors/editors");
 var skin = require("text!ext/gotoline/skin.xml");
 var markup = require("text!ext/gotoline/gotoline.xml");
 
-return ext.register("ext/gotoline/gotoline", {
+module.exports = ext.register("ext/gotoline/gotoline", {
     name    : "Gotoline Window",
     dev     : "Ajax.org",
     type    : ext.GENERAL,
@@ -55,7 +55,7 @@ return ext.register("ext/gotoline/gotoline", {
         var _self = this;
         lstLineNumber.addEventListener("afterchoose", function() {
             if (lstLineNumber.selected) {
-                _self.execGotoLine(parseInt(lstLineNumber.selected.getAttribute("nr")));
+                _self.execGotoLine(parseInt(lstLineNumber.selected.getAttribute("nr"), 10));
             }
             else
                 _self.execGotoLine();
@@ -129,7 +129,7 @@ return ext.register("ext/gotoline/gotoline", {
             var cursor = ace.getCursorPosition();
             
             //Set the current line
-            txtLineNr.setValue(cursor.row + 1);
+            txtLineNr.setValue(txtLineNr.getValue() || cursor.row + 1);
                 
             //Determine the position of the window
             var pos = ace.renderer.textToScreenCoordinates(cursor.row, cursor.column);
@@ -185,7 +185,7 @@ return ext.register("ext/gotoline/gotoline", {
         winGotoLine.hide();
 
         if (typeof line != "number")
-            line = parseInt(txtLineNr.getValue()) || 0;
+            line = parseInt(txtLineNr.getValue(), 10) || 0;
 
         var history = lstLineNumber.$model;
         var gotoline, lineEl = history.queryNode("gotoline/line[@nr='" + line + "']");

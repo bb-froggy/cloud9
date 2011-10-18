@@ -2,7 +2,11 @@
  * @copyright 2010, Ajax.org B.V.
  * @license GPLv3 <http://www.gnu.org/licenses/gpl.txt>
  */
-require.def("ext/keybindings_default/default_win", ["core/ide", "ext/keybindings/keybindings"], function(ide, keys) {
+
+define(function(require, exports, module) {
+
+var ide = require("core/ide");
+var keys = require("ext/keybindings/keybindings");
 
 return keys.onLoad({
     "ext" : {
@@ -31,6 +35,10 @@ return keys.onLoad({
             "stepover": "F10",
             "stepout": "Shift-F9"
         },
+        "zen": {
+            "zen": "Ctrl-E",
+            "zenslow": "Ctrl-Shift-E"
+        },
         "gotoline": {
             "gotoline": "Ctrl-G"
         },
@@ -38,11 +46,17 @@ return keys.onLoad({
             "beautify": "Ctrl-Shift-B"
         },
         "gotofile": {
-            "gotofile": "Alt-Shift-R|Ctrl-T"
+            "gotofile": "Alt-Shift-R"
         },
         "newresource": {
             "newfile": "Ctrl-N",
-            "newfolder": "Ctrl-Shift-N"
+            "newfiletemplate": "Ctrl-Shift-N",
+            "newfolder": "Ctrl-Alt-N"
+        },
+        "quicksearch": {
+            "find": "Ctrl-F",
+            "findnext": "Ctrl-K",
+            "findprevious": "Ctrl-Shift-K"
         },
         "searchreplace" : {
             "search": "Ctrl-Shift-F",
@@ -61,8 +75,8 @@ return keys.onLoad({
             "closetab": "Ctrl-W",
             "closealltabs": "Ctrl-Shift-W",
             "closeallbutme": "Ctrl-Alt-W",
-            "gototabright": "Ctrl-Shift-]",
-            "gototableft": "Ctrl-Shift-[",
+            "gototabright": "Ctrl-]",
+            "gototableft": "Ctrl-[",
             "tab1": "Ctrl-1",
             "tab2": "Ctrl-2",
             "tab3": "Ctrl-3",
@@ -72,7 +86,10 @@ return keys.onLoad({
             "tab7": "Ctrl-7",
             "tab8": "Ctrl-8",
             "tab9": "Ctrl-9",
-            "tab0": "Ctrl-0"
+            "tab0": "Ctrl-0",
+            "revealtab": "Ctrl-Shift-L",
+            "nexttab": "Ctrl-Tab",
+            "previoustab": "Ctrl-Shift-Tab"
         },
         "code" : {
             "selectall": "Ctrl-A",

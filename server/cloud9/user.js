@@ -61,6 +61,9 @@ User.VISITOR_PERMISSIONS = {
     
     this.setPermissions = function(permissions) {
         this.$server_exclude = lang.arrayToMap(permissions.server_exclude.split("|"));
+        if (this.permissions === permissions)
+            return;
+        
         this.permissions = permissions;
         this.emit("changePermissions", this);
     };
@@ -70,7 +73,7 @@ User.VISITOR_PERMISSIONS = {
     };
     
     this.addClientConnection = function(client, message) {
-        var id = client.sessionId;
+        var id = client.id;
         if (this.clients[id] === client)
             return;
             
@@ -87,7 +90,7 @@ User.VISITOR_PERMISSIONS = {
                 user: _self,
                 client: client
             });
-            delete _self.clients[client.sessionId];
+            delete _self.clients[client.id];
             _self.onClientCountChange();
         });
         
@@ -99,7 +102,8 @@ User.VISITOR_PERMISSIONS = {
         try {
             if (typeof message == "string")
                 message = JSON.parse(message);
-        } catch (e) {
+        }
+        catch (e) {
             return this.error("Error parsing message: " + e + "\nmessage: " + message, 8);
         }
 
@@ -130,8 +134,9 @@ User.VISITOR_PERMISSIONS = {
             "message": description
         };
 
+        // pass a lambda to enable socket.io ACK
         if (client)
-            client.send(JSON.stringify(error));
+            client.send(JSON.stringify(error), function() {});
         else
             this.broadcast(error);
     };
@@ -140,8 +145,9 @@ User.VISITOR_PERMISSIONS = {
         if (scope && this.$server_exclude[scope])
             return;
 
-        for (var id in this.clients) 
-            this.clients[id].send(msg);
+        // pass a lambda to enable socket.io ACK
+        for (var id in this.clients)
+            this.clients[id].send(msg, function() {});
     };
     
 }).call(User.prototype);
