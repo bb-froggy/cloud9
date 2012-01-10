@@ -41,14 +41,13 @@
     </a:bar>
     
     <a:tab id="tabDebug" skin="docktab" visible="false" activepage="-1">
-        <a:page id="dbgCallStack" caption="Call Stack" render="runtime">
+        <a:page id="dbgCallStack" caption="Call Stack" prerender="true">
             <a:datagrid
               id         = "dgStack"
               anchors    = "0 0 0 0"
               border     = "0"
               options    = "size|move"
               caching    = "false"
-              prerender  = "false"
               model      = "mdlDbgStack"
               disabled   = "{!stDebugProcessRunning.active or stRunning.active}"
               selected   = "{dbg.activeframe}">
@@ -118,12 +117,12 @@
               options    = "size|move"
               prerender  = "false"
               caching    = "false"
-              model      = "[{dgStack.selected}::vars]"
+              model      = "[{dbg.activeframe}::vars]"
               disabled   = "{!stDebugProcessRunning.active or stRunning.active}"
               loading-message = "Calculating...">
                 <a:actions />
                 <a:each match="[item|globals]" sort="[@name]">
-                    <a:insert match="[globals]" get="{adbg.loadFrame(dbg, {dgStack.selected})}"/>
+                    <a:insert match="[globals]" get="{adbg.loadFrame(dbg, {dbg.activeframe})}"/>
                     <a:insert match="[item[@children='true']]" get="{adbg.loadObjects(dbg, %[.])}" />
                     <a:column caption="Property" value="{[@name] || 'Globals'}" width="40%" icon="debugger/genericvariable_obj.gif" tree="true" />
                     <a:column caption="Value" value="[@value]" width="60%" />
@@ -131,7 +130,7 @@
                 </a:each>
             </a:datagrid>
         </a:page>
-        <a:page id="dbgBreakpoints" caption="Breakpoints" render="runtime">
+        <a:page id="dbgBreakpoints" caption="Breakpoints" prerender="true">
             <a:list id="lstBreakpoints"
               autoselect = "false"
               reselectable = "true"

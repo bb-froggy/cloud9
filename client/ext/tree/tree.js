@@ -9,7 +9,6 @@ define(function(require, exports, module) {
 
 var ide = require("core/ide");
 var ext = require("core/ext");
-var util = require("core/util");
 var fs = require("ext/filesystem/filesystem");
 var settings = require("ext/settings/settings");
 var panels = require("ext/panels/panels");
@@ -31,6 +30,10 @@ module.exports = ext.register("ext/tree/tree", {
     ignoreSBMouseOut : false,
     pendingSBFadeOut : false,
     animControl      : {},
+
+    commands : {
+        "refresh": {hint: "refresh folder tree"}
+    },
 
     onSBMouseOver : function() {
         if (this.ignoreSBMouseOut)
@@ -120,7 +123,7 @@ module.exports = ext.register("ext/tree/tree", {
                 _self.sbIsFaded = true;
             }, _self.animControl.state != apf.tween.RUNNING ? 20 : 200);
         }
-    },
+    }, 
 
     //@todo deprecated?
     getSelectedPath: function() {
@@ -151,6 +154,10 @@ module.exports = ext.register("ext/tree/tree", {
             panels.initPanel(_self);
             _self.enable(true);
         });
+        
+        ide.addEventListener("filecallback", function (e) {
+            _self.refresh();
+        });
     },
 
     init : function() {
@@ -180,12 +187,18 @@ module.exports = ext.register("ext/tree/tree", {
             onclick : function(){
                 _self.changed = true;
                 require(["ext/tree/tree", "ext/settings/settings"], function(tree, settings) {
-                    tree.refresh();
+                    (davProject.realWebdav || davProject).setAttribute("showhidden", this.checked);
+                    _self.refresh();
                     settings.save();
                 })
             }
         }));
-        davProject.setAttribute("showhidden", "[{require('ext/settings/settings').model}::auto/tree/@showhidden]");
+        
+        ide.addEventListener("loadsettings", function(e) {
+            var model = e.model;
+            (davProject.realWebdav || davProject).setAttribute("showhidden", 
+                apf.isTrue(model.queryValue('auto/tree/@showhidden')));
+        });
 
         mnuView.appendChild(new apf.divider());
 
@@ -193,8 +206,10 @@ module.exports = ext.register("ext/tree/tree", {
 
         trFiles.addEventListener("afterselect", this.$afterselect = function(e) {
             var settings = require("ext/settings/settings");
-            if (settings.model && trFiles.selected) {
+            if (settings.model && settings.model.data && trFiles.selected) {
                 var settings          = settings.model.data;
+                if (!settings)
+                    return;
                 var treeSelectionNode = settings.selectSingleNode("auto/tree_selection");
                 var nodeSelected      = trFiles.selected.getAttribute("path");
                 var nodeType          = trFiles.selected.getAttribute("type");
@@ -231,7 +246,7 @@ module.exports = ext.register("ext/tree/tree", {
             args[1].setAttribute("newname", filename);
 
             setTimeout(function () {
-                fs.beforeRename(args[1], null, args[0].getAttribute("path").replace(/[\/]+$/, "") + "/" + filename);
+                fs.beforeRename(args[1], null, args[0].getAttribute("path").replace(/[\/]+$/, "") + "/" + filename, true);
                 args[1].removeAttribute("newname");
             });
         });

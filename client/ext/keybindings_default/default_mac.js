@@ -4,7 +4,6 @@
  */
 define(function(require, exports, module) {
 
-var ide = require("core/ide");
 var keys = require("ext/keybindings/keybindings");
 
 return keys.onLoad({
@@ -14,7 +13,8 @@ return keys.onLoad({
         },
         "save" : {
             "quicksave": "Command-S",
-            "saveas": "Command-Shift-S"
+            "saveas": "Command-Shift-S",
+	    "reverttosaved": "Command-Shift-Q"
         },
         "undo" : {
             "undo": "Command-Z",
@@ -71,8 +71,8 @@ return keys.onLoad({
             "showsettings": "Command-,"
         },
         "tabbehaviors" : {
-            "closetab": "Command-W|Option-W",
-            "closealltabs": "Command-Shift-W|Option-Shift-W",
+            "closetab": "Option-W",
+            "closealltabs": "Option-Shift-W",
             "closeallbutme": "Command-Option-W",
             "gototabright": "Command-]",
             "gototableft": "Command-[",
@@ -89,6 +89,13 @@ return keys.onLoad({
             "revealtab": "Command-Shift-L",
             "nexttab": "Command-Tab|Option-Tab",
             "previoustab": "Command-Shift-Tab|Option-Shift-Tab"
+        },
+        "tabsessions" : {
+            "savetabsession": "Command-Alt-S",
+        },
+        "splitview" : {
+            "mergetableft": "Command-Option-[",
+            "mergetabright": "Command-Option-]"
         },
         "code" : {
             "selectall": "Command-A",
@@ -137,6 +144,10 @@ return keys.onLoad({
             "backspace": "Command-Backspace|Option-Backspace|Backspace",
             "outdent": "Shift-Tab",
             "indent": "Tab"
+        },
+        "language": {
+            "complete": "Ctrl-Space|Alt-Space",
+            "renameVar": "Command-Option-R"
         }
     }
 });

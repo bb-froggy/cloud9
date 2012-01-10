@@ -9,8 +9,6 @@ define(function(require, exports, module) {
 
 var ide = require("core/ide");
 var ext = require("core/ext");
-var util = require("core/util");
-var fs = require("ext/filesystem/filesystem");
 var markup = require("text!ext/settings/settings.xml");
 var template = require("text!ext/settings/template.xml");
 var panels = require("ext/panels/panels");
@@ -30,7 +28,7 @@ module.exports = ext.register("ext/settings/settings", {
 
     nodes : [],
 
-    save : function(){
+    save : function() {
         var _self = this;
         clearTimeout(this.$customSaveTimer);
 
@@ -40,12 +38,17 @@ module.exports = ext.register("ext/settings/settings", {
         }, 100);
     },
 
-    saveToFile : function(){
-        ide.socket.send(JSON.stringify({
+    saveToFile : function() {
+        var data = this.model.data && apf.xmldb.cleanXml(this.model.data.xml) || "";
+        ide.send(JSON.stringify({
             command: "settings",
             action: "set",
-            settings: this.model.data && apf.xmldb.cleanXml(this.model.data.xml) || ""
+            settings: data
         }));
+        ide.dispatchEvent("track_action", {
+            type: "save settings",
+            settings: data
+        });
     },
 
     saveSettingsPanel: function() {
@@ -92,7 +95,7 @@ module.exports = ext.register("ext/settings/settings", {
             });
             
             if (ide.onLine === true)
-                ide.socket.send(JSON.stringify({command: "settings", action: "get"}));
+                ide.send(JSON.stringify({command: "settings", action: "get"}));
             return;
         }
 
