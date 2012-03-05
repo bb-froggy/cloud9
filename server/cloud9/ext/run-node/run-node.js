@@ -167,7 +167,7 @@ sys.inherits(NodeRuntimePlugin, Plugin);
                 env[key] = process.env[key];
         }
 
-        console.log("Executing node " + proc + " " + args.join(" ") + " " + cwd);
+        console.log("Executing node \"" + proc + " " + args.join(" ") + "\" Working directory: " + cwd);
 
         var child = _self.child = Spawn(proc, args, {cwd: cwd, env: env});
         _self.debugClient = args.join(" ").search(/(?:^|\b)\-\-debug\b/) != -1;
