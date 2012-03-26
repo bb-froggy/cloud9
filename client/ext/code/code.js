@@ -112,6 +112,7 @@ var contentTypes = {
     "cxx": "text/x-c",
     "h": "text/x-c",
     "hh": "text/x-c",
+    "hpp": "text/x-c",
 
     "cs": "text/x-csharp",
 
@@ -321,6 +322,7 @@ module.exports = ext.register("ext/code/code", {
                   .attr("wraplimitmin", "")
                   .attr("wraplimitmax", "")
                   .attr("gutter", "true")
+                  .attr("folding", "true")
                   .attr("highlightselectedword", "true")
                   .attr("autohidehorscrollbar", "true").node();
 
@@ -402,6 +404,7 @@ module.exports = ext.register("ext/code/code", {
                 caption : "Length: {ceEditor.value.length}"
             })),
 
+            mnuView.appendChild(new apf.divider()),
             mnuView.appendChild(menuSyntaxHighlight)
         );
 
